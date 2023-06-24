@@ -36,4 +36,13 @@ body {
 }
 
 @layer components {
+  .typingText {
+    display: inline-block;
+    white-space: pre-wrap;
+    overflow: hidden;
+    max-width: 100%;
+  }
+  .typingAnimation {
+    overflow: hidden;
+  }
 }
