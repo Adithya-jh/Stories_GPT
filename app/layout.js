@@ -1,7 +1,9 @@
 import './globals.css';
 import { Orbitron } from 'next/font/google';
+import { Rajdhani } from 'next/font/google';
 
 const orbitron = Orbitron({ subsets: ['latin'] });
+const rajdhani = Rajdhani({ subsets: ['latin'], weight: ['400'] });
 
 export const metadata = {
   title: 'Create Next App',
@@ -11,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={orbitron.className}>{children}</body>
+      <body className={rajdhani.className}>{children}</body>
     </html>
   );
 }

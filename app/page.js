@@ -53,14 +53,23 @@ export default function Home() {
           href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
           rel="stylesheet"
         />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400&display=swap"
+          rel="stylesheet"
+        ></link>
       </Head>
 
       <main className="flex flex-col justify-center">
         <div className="mt-[100px]">
           <motion.div
             // animate={{ x: 100 }}
-            whileInView={{ y: 30 }}
-            transition={{ delay: 1 }}
+            initial={{ y: -150 }}
+            animate={{ y: 50 }}
+            transition={{ delay: 3, type: 'spring', stiffness: 100 }}
+            // animate={{ x: 100 }}
+            // transition={{ t, stiffness: 100 }}
           >
             STORIES.GPT
           </motion.div>
@@ -71,6 +80,30 @@ export default function Home() {
             </span>
           </div>
         </div>
+        <motion.div
+          className="mt-[200px]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 5 }}
+          whileHover={{
+            scale: 1.2,
+            transition: { duration: 0.25 },
+          }}
+        >
+          <a
+            href="/premise"
+            class="relative px-5 py-3 overflow-hidden font-medium text-gray-600 bg-gray-100 border border-gray-100 rounded-lg shadow-inner group"
+          >
+            <span class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"></span>
+            <span class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"></span>
+            <span class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+            <span class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+            <span class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"></span>
+            <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">
+              GET STARTED
+            </span>
+          </a>
+        </motion.div>
       </main>
 
       <div className="ml-[-350px] mb-[100px] z-[-2] absolute top-[80px]">
@@ -240,7 +273,7 @@ export default function Home() {
             cx="100"
             cy="300"
             r="80"
-            stroke="#000000"
+            stroke="yellow"
             variants={draw}
             custom={2}
           />

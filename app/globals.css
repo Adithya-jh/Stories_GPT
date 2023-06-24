@@ -26,7 +26,7 @@ body {
     rgb(var(--background-start-rgb));
 
   text-align: center;
-  font-family: Orbitron;
+  font-family: 'Orbitron';
   /* background:linear-gradient(141deg, #ccc 25%, #eee 40%, #ddd 55%); */
   /* color:#555; */
 
@@ -41,6 +41,7 @@ body {
     white-space: pre-wrap;
     overflow: hidden;
     max-width: 100%;
+    /* font-family: 'Rajdhani'; */
   }
   .typingAnimation {
     overflow: hidden;
