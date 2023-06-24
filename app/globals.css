@@ -24,4 +24,16 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+
+  text-align: center;
+  font-family: Orbitron;
+  /* background:linear-gradient(141deg, #ccc 25%, #eee 40%, #ddd 55%); */
+  /* color:#555; */
+
+  /* -webkit-backface-visibility: hidden; */
+  /* -webkit-perspective: 1000; */
+  /* -webkit-transform: translate3d(0,0,0); */
+}
+
+@layer components {
 }
