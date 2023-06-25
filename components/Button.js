@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 function Button({ path, title, delay }) {
   return (
     <motion.div
-      className="mt-[200px]"
+      className="mt-[200px] cursor-pointer"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: delay }}

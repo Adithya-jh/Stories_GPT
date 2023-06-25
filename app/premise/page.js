@@ -4,8 +4,10 @@ import PageWrapper from '@/components/PageWrapper';
 import TextArea from '@/components/TextArea';
 import Button from '@/components/Button';
 
+let api_out = null;
+
 function Premise() {
-  const [text, setText] = useState('');
+  const [userInput, setUserInput] = useState('');
   const [apiOutput, setApiOutput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -13,7 +15,7 @@ function Premise() {
     // setIsGenerating(true);
 
     console.log('Calling OpenAI...');
-    const response = await fetch('/api/generate', {
+    const response = await fetch('/api/auth/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,35 +32,38 @@ function Premise() {
   };
 
   const handleTextChange = (event) => {
-    setText(event.target.value);
+    setUserInput(event.target.value);
   };
+
+  let path = '';
+
+  api_out = apiOutput;
   return (
     <PageWrapper>
       <div className="mt-[200px] flex flex-col space-between">
         <div>Write down the premise of the story you want to develop:</div>
 
         <TextArea
-          value={text}
+          value={userInput}
           onChange={handleTextChange}
           placeholder="Enter your premise here"
         />
         {/* <p>Entered text: {text}</p> */}
-        <Button
-          path="/characters"
-          title="GET ME CHARACTERS"
-          delay={2}
-          onClick={callGenerateEndpoint}
-        />
+        {!userInput ? (path = '') : (path = '/characters')}
+        <div onClick={callGenerateEndpoint}>
+          <Button
+            // path="/premise"
+            path={userInput ? path : ''}
+            title="GET ME CHARACTERS"
+            delay={2}
+          />
+        </div>
 
-        {apiOutput && (
-          <div className="output">
-            <div className="output-header-container">
-              <div className="output-header">
-                <h3>Output</h3>
-              </div>
-            </div>
-            <div className="output-content">
+        {apiOutput && !userInput && (
+          <div className="text-white w-[100%] flex justify-center">
+            <div className="mt-[100px]">
               <p>{apiOutput}</p>
+              {/* <p>BOMB BLAST MANDAYA</p> */}
             </div>
           </div>
         )}
