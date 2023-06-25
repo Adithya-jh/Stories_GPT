@@ -4,6 +4,8 @@ import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 
+import Button from '@/components/Button';
+
 // import { useState, useEffect } from 'react';
 
 // import { Orbitron } from 'next/font/google';
@@ -80,7 +82,7 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <motion.div
+        {/* <motion.div
           className="mt-[200px]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -103,7 +105,8 @@ export default function Home() {
               GET STARTED
             </span>
           </a>
-        </motion.div>
+        </motion.div> */}
+        <Button path="/premise" title="GET STARTED" delay={5} />
       </main>
 
       <div className="ml-[-350px] mb-[100px] z-[-2] absolute top-[80px]">
