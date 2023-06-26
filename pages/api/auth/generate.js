@@ -28,12 +28,13 @@ const openai = new OpenAIApi(configuration);
 // export default generateAction;
 
 const basePromptPrefix = `
-Give me a nice movie titles based on the following -  premises 
+Generate characters along with thier character description for a long story and screenplay 
+(Develop strong characters according to the premise and each description should be atleast of 100 words) , 
+based on the following premise - 
 `;
 
 const generateAction = async (req, res) => {
   console.log(`API: ${basePromptPrefix}${req.body.userInput}`);
-
   // const baseCompletion = await openai.createCompletion({
   //   model: 'text-davinci-002',
   //   prompt: `${basePromptPrefix}${req.body.userInput}`,
@@ -102,7 +103,7 @@ const generateAction = async (req, res) => {
   // console.log(resp);
 
   // Send over the Prompt #2's output to our UI instead of Prompt #1's.
-  res.status(200).json({ output: resp });
+  res.status(200).json({ output: resp.choices[0] });
   // res.status(200).json({ output: secondPromptOutput });
 };
 

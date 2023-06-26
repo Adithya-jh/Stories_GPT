@@ -7,7 +7,11 @@ import Button from '@/components/Button';
 import Animation1 from '@/components/Animation1';
 import { Canvas, useFrame } from '@react-three/fiber';
 
-let api_out = null;
+import { createContext } from 'react';
+
+export let api_out = 'Initial';
+
+export const ApiContext = createContext();
 
 function Premise() {
   const [userInput, setUserInput] = useState('');
@@ -31,6 +35,7 @@ function Premise() {
     console.log('OpenAI replied...', output.text);
 
     setApiOutput(`${output.text}`);
+    api_out = apiOutput;
     // setIsGenerating(false);
   };
 
@@ -40,44 +45,46 @@ function Premise() {
 
   let path = '';
 
-  api_out = apiOutput;
+  // api_out = apiOutput;
   return (
     <>
-      <PageWrapper>
-        <div className="mt-[200px] flex flex-col space-between">
-          <div>Write down the premise of the story you want to develop:</div>
+      <ApiContext.Provider value={userInput}>
+        <PageWrapper>
+          <div className="mt-[200px] flex flex-col space-between">
+            <div>Write down the premise of the story you want to develop:</div>
 
-          <TextArea
-            value={userInput}
-            onChange={handleTextChange}
-            placeholder="Enter your premise here"
-          />
-          {/* <p>Entered text: {text}</p> */}
-          {/* {!userInput ? (path = '') : (path = '/characters')} */}
-          <div onClick={callGenerateEndpoint}>
-            <Button
-              // path="/premise"
-              path="/characters"
-              title="GET ME CHARACTERS"
-              delay={2}
+            <TextArea
+              value={userInput}
+              onChange={handleTextChange}
+              placeholder="Enter your premise here"
             />
-          </div>
-
-          <div className="root"></div>
-
-          {apiOutput && !userInput && (
-            <div className="text-white w-[100%] flex justify-center">
-              <div className="mt-[100px]">
-                <p>{apiOutput}</p>
-                {/* <p>BOMB BLAST MANDAYA</p> */}
-              </div>
+            {/* <p>Entered text: {text}</p> */}
+            {/* {!userInput ? (path = '') : (path = '/characters')} */}
+            <div onClick={callGenerateEndpoint}>
+              <Button
+                // path="/premise"
+                path="/characters"
+                title="GET ME CHARACTERS"
+                delay={2}
+              />
             </div>
-          )}
+
+            <div className="root"></div>
+
+            {apiOutput && !userInput && (
+              <div className="text-white w-[100%] flex justify-center">
+                <div className="mt-[100px]">
+                  <p>{apiOutput}</p>
+                  {/* <p>BOMB BLAST MANDAYA</p> */}
+                </div>
+              </div>
+            )}
+          </div>
+        </PageWrapper>
+        <div className="premise-ani">
+          <Animation1 />
         </div>
-      </PageWrapper>
-      <div className="premise-ani">
-        <Animation1 />
-      </div>
+      </ApiContext.Provider>
     </>
   );
 }
