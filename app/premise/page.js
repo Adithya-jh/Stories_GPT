@@ -63,7 +63,7 @@ function Premise() {
             <div onClick={callGenerateEndpoint}>
               <Button
                 // path="/premise"
-                path="/characters"
+                // path="/characters"
                 title="GET ME CHARACTERS"
                 delay={2}
               />
@@ -71,7 +71,8 @@ function Premise() {
 
             <div className="root"></div>
 
-            {apiOutput && !userInput && (
+            {apiOutput && (
+              // !userInput &&
               <div className="text-white w-[100%] flex justify-center">
                 <div className="mt-[100px]">
                   <p>{apiOutput}</p>

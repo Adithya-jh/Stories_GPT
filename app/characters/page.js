@@ -10,7 +10,7 @@ import CharAnimation from '@/components/CharAnimation';
 
 function Characters() {
   const character_out = useContext(ApiContext);
-  console.log('character_out', api_out);
+  console.log('character_out', character_out);
   return (
     <div className="flex">
       <div className="h-[750px] w-[20%]  bg-black">
@@ -20,11 +20,11 @@ function Characters() {
       <div>
         <div className="ml-[250px] mt-[150px]">Characters and Description:</div>
         <div className="ml-[250px] mt-[10px] text-[#69eff1]">
-          Discover Unique Personalities with Their Captivating Descriptions
+          Discover Unique Personalities with their Captivating Descriptions
         </div>
 
-        {/* <div className="ml-[250px] mt-[10px]">{character_out}</div> */}
-        <div className="ml-[250px] mt-[10px]">{api_out}</div>
+        <div className="ml-[250px] mt-[10px]">{character_out}</div>
+        {/* <div className="ml-[250px] mt-[10px]">{api_out}</div> */}
 
         {/* {character_out} */}
       </div>
