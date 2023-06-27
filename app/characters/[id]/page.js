@@ -7,12 +7,14 @@ import { ApiContext } from '@/app/premise/page';
 import { api_out } from '@/app/premise/page';
 
 import CharAnimation from '@/components/CharAnimation';
+import Header from '@/components/Header';
 
 function Characters() {
   const character_out = useContext(ApiContext);
   console.log('character_out', character_out);
   return (
     <div className="flex">
+      <Header />
       <div className="h-[750px] w-[20%]  bg-black">
         <CharAnimation />
       </div>
