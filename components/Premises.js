@@ -24,7 +24,7 @@ function Premises() {
       initial={{ x: -150 }}
       animate={{ x: 20 }}
       transition={{ delay: 0, type: 'spring', stiffness: 100 }}
-      className="p-2 w-[250px] h-[600px] flex z-20 bg-[rgba(5,5,5,0.93)] border  rounded-md"
+      className="p-2 w-[250px] h-[600px] flex z-20 bg-[rgba(5,5,5,0.7)] border  rounded-md"
     >
       <div className="flex-1 ">
         <div className="cursor-pointer z-20">

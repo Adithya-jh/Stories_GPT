@@ -45,7 +45,7 @@ const generateAction = async (req, res) => {
   // const prompt = `${basePromptPrefix}${req.body.userInput}`;
   const user_prompt = req.body.userInput;
   let prompty =
-    'Generate a alert message to user to enter the text(premise) above.';
+    'Generate a alert message to user to enter the text(premise) below.';
 
   if (user_prompt) {
     prompty = `${basePromptPrefix}${req.body.userInput}`;

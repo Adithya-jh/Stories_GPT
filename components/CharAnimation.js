@@ -71,7 +71,7 @@ const AnimateCharacter = () => {
         1
       );
     }, 2000);
-  }, []);
+  }, [shouldRunFrame]);
 
   // useFrame((state, delta) => (char1Ref.current.position.z += delta));
   // {"pose_loup":true}

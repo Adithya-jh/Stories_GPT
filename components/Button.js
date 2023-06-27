@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/firebase';
 
-function Button({ path, title, delay }) {
+function Button({ path, title, delay, onClick }) {
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -24,7 +24,7 @@ function Button({ path, title, delay }) {
   };
   return (
     <div>
-      {title == 'GET ME CHARACTERS' && (
+      {title == 'ENTER THE PREMISE' && (
         <motion.div
           className="mt-[200px] cursor-pointer"
           initial={{ opacity: 0 }}
@@ -52,7 +52,7 @@ function Button({ path, title, delay }) {
         </motion.div>
       )}
 
-      {title != 'GET ME CHARACTERS' && (
+      {title != 'ENTER THE PREMISE' && (
         <motion.div
           className="mt-[200px] cursor-pointer"
           initial={{ opacity: 0 }}
@@ -62,6 +62,7 @@ function Button({ path, title, delay }) {
             scale: 1.2,
             transition: { duration: 0.25 },
           }}
+          onClick={onClick}
         >
           <a
             href={path}

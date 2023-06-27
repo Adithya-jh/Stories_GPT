@@ -125,7 +125,7 @@ export default function Home() {
             </span>
           </a>
         </motion.div> */}
-        <Button path="/premise" title="GET STARTED" delay={5} />
+        <Button path="/flow" title="GET STARTED" delay={5} />
       </main>
 
       <div className="ml-[-350px] mb-[100px] z-[-2] absolute top-[80px]">
