@@ -8,6 +8,8 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { toast } from 'react-hot-toast';
 
+import WorldAnimButton from './WorldAnimButton';
+
 function PremiseInput({ premiseId }) {
   const [userInput, setUserInput] = useState('');
   const [apiOutput, setApiOutput] = useState('');
@@ -125,6 +127,11 @@ function PremiseInput({ premiseId }) {
         </div>
       )} */}
       </div>
+      {userInput && apiOutput && (
+        <div className="absolute top-5 ml-[300px]">
+          <WorldAnimButton userInput={userInput} apiOutput={apiOutput} />
+        </div>
+      )}
     </div>
   );
 }

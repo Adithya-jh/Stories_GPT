@@ -7,6 +7,8 @@ import Button from '@/components/Button';
 import Animation1 from '@/components/Animation1';
 import { Canvas, useFrame } from '@react-three/fiber';
 
+import FlowAnimation from '@/components/FlowAnimation';
+
 import { createContext } from 'react';
 import Header from '@/components/Header';
 import Premises from '@/components/Premises';
@@ -101,6 +103,27 @@ function Premise() {
                 </svg>
               </button>
             )}
+
+            <div className="absolute top-[140px] z-[-1] flex w-[40%] ml-[1100px] justify-center items-start">
+              {/* <FlowAnimation /> */}
+              {/* <Animation1 /> */}
+
+              <img
+                src="./fc.png"
+                alt="poster"
+                className="w-[450px] h-[450px] brightness-[15%]"
+              />
+            </div>
+
+            {/* <div className="absolute top-[140px] z-[-1] flex w-[38%] ml-[-20px]  items-start">
+          
+
+              <img
+                src="./rt.jpeg"
+                alt="poster"
+                className="w-[350px] h-[450px] brightness-[10%]"
+              />
+            </div> */}
 
             <div className="absolute flex flex-col  m-[10px] w-[100%] ml-[140px]">
               <div className="w-[80%] h-[100%] flex flex-col justify-center items-center">
