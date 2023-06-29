@@ -11,7 +11,7 @@ import { toast } from 'react-hot-toast';
 import WorldAnimButton from './WorldAnimButton';
 import GeoInfo from './GeoInfo';
 
-function PremiseInput({ premiseId }) {
+function PremiseInput({ premiseId, isMessage }) {
   const [userInput, setUserInput] = useState('');
   const [apiOutput, setApiOutput] = useState('');
   const [isMoved, setIsMoved] = useState(false);
@@ -24,6 +24,14 @@ function PremiseInput({ premiseId }) {
     // setIsGenerating(true);
     e.preventDefault();
     setIsMoved(true);
+
+    // const response = await fetch('/api/auth/generate', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ userInput, premiseId, session }),
+    // });
 
     const input = userInput.trim();
 
@@ -62,6 +70,7 @@ function PremiseInput({ premiseId }) {
       },
       body: JSON.stringify({ userInput, premiseId, session }),
     });
+
     // .then(() => {
     //   toast.success('Your character description has been generated', {
     //     id: notification,
@@ -84,52 +93,102 @@ function PremiseInput({ premiseId }) {
   };
   return (
     <div className="p-0 m-0">
-      <div className="fixed">
-        {apiOutput && (
-          <div className="text-white bg-white flex justify-center">
-            <div className="absolute top-[50px] ml-[480px] w-[800px] flex justify-center items-center">
+      {!isMessage ? (
+        <div className="fixed">
+          {/* {apiOutput && (
+            <div className="text-white bg-white flex justify-center">
+              <div className="absolute top-[50px] ml-[480px] w-[800px] flex justify-center items-center">
+                <p>{apiOutput}</p>
+       
+              </div>
+            </div>
+          )} */}
+          <motion.div
+            initial={{ y: 0 }}
+            // animate={{ y: isMoved ? 410 : 0 }}
+            transition={{ delay: 0, type: 'spring', stiffness: 100 }}
+            className="absolute ml-[250px] w-[100%] z-[2] h-[200px] top-[400px]"
+          >
+            <TextArea
+              value={userInput}
+              onChange={handleTextChange}
+              placeholder="Enter your premise here"
+            />
+          </motion.div>
+          <motion.div
+            initial={{ y: 0 }}
+            // animate={{ y: isMoved ? 410 : 0 }}
+            transition={{ delay: 0, type: 'spring', stiffness: 100 }}
+            // onClick={callGenerateEndpoint}
+            className="ml-[250px] flex justify-center p-[0px] m-[0px] z-[-1] relative w-[100%] mt-[400px]"
+          >
+            <Button
+              // path="/premise"
+              // path="/characters"
+              onClick={callGenerateEndpoint}
+              title="GET ME CHARACTERS"
+              delay={2}
+              // onClick
+            />
+          </motion.div>
+          {/* {apiOutput && (
+          <div className="text-white  flex justify-center">
+            <div className="mt-[100px]">
               <p>{apiOutput}</p>
-              {/* <p>BOMB BLAST MANDAYA</p> */}
+    
             </div>
           </div>
-        )}
-        <motion.div
-          initial={{ y: 0 }}
-          animate={{ y: isMoved ? 410 : 0 }}
-          transition={{ delay: 0, type: 'spring', stiffness: 100 }}
-          className="ml-[230px] w-[100%] z-[2] h-[200px] top-[200px]"
-        >
-          <TextArea
-            value={userInput}
-            onChange={handleTextChange}
-            placeholder="Enter your premise here"
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: 0 }}
-          animate={{ y: isMoved ? 410 : 0 }}
-          transition={{ delay: 0, type: 'spring', stiffness: 100 }}
-          // onClick={callGenerateEndpoint}
-          className="ml-[250px] flex justify-center p-[0px] m-[0px] z-[-1] relative w-[100%] mt-[-200px]"
-        >
-          <Button
-            // path="/premise"
-            // path="/characters"
-            onClick={callGenerateEndpoint}
-            title="GET ME CHARACTERS"
-            delay={2}
-            // onClick
-          />
-        </motion.div>
-        {/* {apiOutput && (
-        <div className="text-white  flex justify-center">
-          <div className="mt-[100px]">
-            <p>{apiOutput}</p>
-  
-          </div>
+        )} */}
         </div>
-      )} */}
-      </div>
+      ) : (
+        <div className="fixed">
+          {/* {apiOutput && (
+            <div className="text-white bg-white flex justify-center">
+              <div className="absolute top-[50px] ml-[480px] w-[800px] flex justify-center items-center">
+                <p>{apiOutput}</p>
+       
+              </div>
+            </div>
+          )} */}
+          <motion.div
+            initial={{ y: 0 }}
+            animate={{ y: isMoved ? 410 : 0 }}
+            transition={{ delay: 0, type: 'spring', stiffness: 100 }}
+            className="ml-[230px] w-[100%] z-[2] h-[200px] top-[200px]"
+          >
+            <TextArea
+              value={userInput}
+              onChange={handleTextChange}
+              placeholder="Enter your premise here"
+            />
+          </motion.div>
+          <motion.div
+            initial={{ y: 0 }}
+            animate={{ y: isMoved ? 410 : 0 }}
+            transition={{ delay: 0, type: 'spring', stiffness: 100 }}
+            // onClick={callGenerateEndpoint}
+            className="ml-[250px] flex justify-center p-[0px] m-[0px] z-[-1] relative w-[100%] mt-[-200px]"
+          >
+            <Button
+              // path="/premise"
+              // path="/characters"
+              onClick={callGenerateEndpoint}
+              title="GET ME CHARACTERS"
+              delay={2}
+              // onClick
+            />
+          </motion.div>
+          {/* {apiOutput && (
+          <div className="text-white  flex justify-center">
+            <div className="mt-[100px]">
+              <p>{apiOutput}</p>
+    
+            </div>
+          </div>
+        )} */}
+        </div>
+      )}
+
       {/* <GeoInfo userInput={userInput} apiOutput={apiOutput} /> */}
       {userInput && apiOutput && (
         <div className="absolute top-5 ml-[300px]">

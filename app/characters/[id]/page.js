@@ -49,7 +49,7 @@ function Characters({ params: { id } }) {
         <CharAnimation />
       </div>
 
-      <div className="ml-[40px] mt-[-70px]">
+      <div className="ml-[40px] mt-[-70px] flex flex-col">
         <div className="ml-[250px] mt-[150px]">Characters and Description:</div>
         <div className="ml-[250px] mt-[10px] text-[#69eff1]">
           Discover Unique Personalities with their Captivating Descriptions
@@ -78,7 +78,10 @@ function Characters({ params: { id } }) {
           </div>
         </div> */}
 
-        {/* <CharDescription premiseId={id} /> */}
+        <div className="max-h-[400px]">
+          <CharDescription premiseId={id} />
+        </div>
+
         <PremiseInput premiseId={id} />
       </div>
 

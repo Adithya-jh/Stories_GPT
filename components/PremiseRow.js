@@ -21,7 +21,7 @@ function PremiseRow({ id }) {
 
   const removePremise = async () => {
     await deleteDoc(doc(db, 'users', session.user.email, 'premises', id));
-    router.replace('/premise');
+    router.replace('/flow');
   };
   return (
     <Link
@@ -30,7 +30,8 @@ function PremiseRow({ id }) {
     >
       <ChatBubbleLeftIcon className="h-5 w-5" />
       <p className="flex-1 hidden md:inline-flex truncate ml-2">
-        {messages?.docs[messages?.docs.length - 1]?.data().text ||
+        {(messages && messages?.docs[messages?.docs.length - 1]?.data().text) ||
+          // messages?.docs?.data().text ||
           'Your Premise'}
       </p>
       <TrashIcon

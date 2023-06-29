@@ -33,8 +33,11 @@ const openai = new OpenAIApi(configuration);
 const basePromptPrefix = `
 Generate characters along with thier character description for a long story and screenplay 
 (Develop strong characters according to the premise and each description should be atleast of 100 words) , 
-based on the following premise - 
+based on the following premise. - 
 `;
+
+const basePromptPrefix2 = `before that identify that is the given premise is like a premise or not if the premise is one or two
+words then ask them to retype the premise `;
 
 const generateAction = async (req, res) => {
   console.log(`API: ${basePromptPrefix}${req.body.userInput}`);
@@ -79,7 +82,7 @@ const generateAction = async (req, res) => {
     );
 
   const message = {
-    text: resp.choices[0],
+    text: resp.choices[0].text,
     // timestamp: admin.firestore.serverTimestamp().now(),
     timestamp: admin.firestore.FieldValue.serverTimestamp(),
 
@@ -94,7 +97,8 @@ const generateAction = async (req, res) => {
     .doc(session.user.email)
     .collection('premises')
     .doc(premiseId)
-    .collection('premise2')
+    // .collection('premised')
+    .collection('premise')
     .add(message);
 
   // const basePromptOutput = baseCompletion.data.choices;
