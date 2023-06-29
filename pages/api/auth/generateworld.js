@@ -4,9 +4,6 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-import admin from 'firebase-admin';
-import { adminDb } from '@/firebaseAdmin';
-
 const openai = new OpenAIApi(configuration);
 
 // const basePromptPrefix = `Write me a detailed table of contents for a blog post with the title below.
@@ -31,9 +28,8 @@ const openai = new OpenAIApi(configuration);
 // export default generateAction;
 
 const basePromptPrefix = `
-Generate characters along with thier character description for a long story and screenplay 
-(Develop strong characters according to the premise and each description should be atleast of 100 words) , 
-based on the following premise - 
+Generate the detailed study of the geographies and the location for the story based on the premise below. World building of the story. 
+Keep it simple and relatable, the setting and location should be new and true to the given premise below - 
 `;
 
 const generateAction = async (req, res) => {
@@ -46,14 +42,13 @@ const generateAction = async (req, res) => {
   // });
 
   // const prompt = `${basePromptPrefix}${req.body.userInput}`;
-  const { userInput, premiseId, session } = req.body;
-  const user_prompt = req.body.userInput;
-  let prompty =
-    'Generate a alert message to user to enter the text(premise) below.';
+  //   const user_prompt = req.body.userInput;
+  //   let prompty =
+  //     'Generate a alert message to user to enter the text(premise) below.';
 
-  if (user_prompt) {
-    prompty = `${basePromptPrefix}${req.body.userInput}`;
-  }
+  //   if (user_prompt) {
+  prompty = `${basePromptPrefix}${req.body.userInput}`;
+  //   }
 
   const resp = await openai
     .createCompletion({
@@ -77,25 +72,6 @@ const generateAction = async (req, res) => {
       (err) =>
         `CHATGPT was unable to find an answer for that , ERROR : ${err.message}`
     );
-
-  const message = {
-    text: resp.choices[0],
-    // timestamp: admin.firestore.serverTimestamp().now(),
-    timestamp: admin.firestore.FieldValue.serverTimestamp(),
-
-    user: {
-      id: 'storiesgpt',
-      name: 'storiesgpt',
-    },
-  };
-
-  await adminDb
-    .collection('users')
-    .doc(session.user.email)
-    .collection('premises')
-    .doc(premiseId)
-    .collection('premise2')
-    .add(message);
 
   // const basePromptOutput = baseCompletion.data.choices;
   // const basePromptOutput = baseCompletion.data.choices.pop();

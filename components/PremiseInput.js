@@ -9,6 +9,7 @@ import { db } from '@/firebase';
 import { toast } from 'react-hot-toast';
 
 import WorldAnimButton from './WorldAnimButton';
+import GeoInfo from './GeoInfo';
 
 function PremiseInput({ premiseId }) {
   const [userInput, setUserInput] = useState('');
@@ -19,8 +20,9 @@ function PremiseInput({ premiseId }) {
 
   const { data: session } = useSession();
 
-  const callGenerateEndpoint = async () => {
+  const callGenerateEndpoint = async (e) => {
     // setIsGenerating(true);
+    e.preventDefault();
     setIsMoved(true);
 
     const input = userInput.trim();
@@ -38,17 +40,18 @@ function PremiseInput({ premiseId }) {
       },
     };
 
-    await addDoc(
-      collection(
-        db,
-        'users',
-        session.user.email,
-        'premises',
-        premiseId,
-        'premise'
-      ),
-      premise
-    );
+    userInput &&
+      (await addDoc(
+        collection(
+          db,
+          'users',
+          session.user.email,
+          'premises',
+          premiseId,
+          'premise'
+        ),
+        premise
+      ));
     // Toast Notification
     const notification = toast.loading('Generating your Character description');
 
@@ -57,7 +60,7 @@ function PremiseInput({ premiseId }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userInput }),
+      body: JSON.stringify({ userInput, premiseId, session }),
     });
     // .then(() => {
     //   toast.success('Your character description has been generated', {
@@ -127,11 +130,18 @@ function PremiseInput({ premiseId }) {
         </div>
       )} */}
       </div>
+      {/* <GeoInfo userInput={userInput} apiOutput={apiOutput} /> */}
       {userInput && apiOutput && (
         <div className="absolute top-5 ml-[300px]">
           <WorldAnimButton userInput={userInput} apiOutput={apiOutput} />
         </div>
       )}
+
+      {/* {userInput && apiOutput && (
+        <div className="absolute top-5 ml-[300px]">
+
+        </div>
+      )} */}
     </div>
   );
 }

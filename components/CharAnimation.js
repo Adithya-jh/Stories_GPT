@@ -50,7 +50,7 @@ const AnimateCharacter = () => {
     }, 3000);
 
     return () => clearTimeout(timeout);
-  }, [shouldRunFrame]);
+  }, []);
 
   const char1Animation = useAnimations(char1.animations, char1.scene);
   const char1Ref = useRef();
