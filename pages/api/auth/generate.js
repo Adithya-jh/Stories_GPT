@@ -81,7 +81,7 @@ const generateAction = async (req, res) => {
         `CHATGPT was unable to find an answer for that , ERROR : ${err.message}`
     );
 
-  const message = {
+  const message1 = {
     text: resp.choices[0].text,
     // timestamp: admin.firestore.serverTimestamp().now(),
     timestamp: admin.firestore.FieldValue.serverTimestamp(),
@@ -89,6 +89,18 @@ const generateAction = async (req, res) => {
     user: {
       id: 'storiesgpt',
       name: 'storiesgpt',
+    },
+  };
+
+  const message = {
+    text: resp.choices[0].text,
+    // text: input,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+
+    user: {
+      _id: 'storiesgpt',
+      name: 'stories-gpt',
+      avatar: `https://ui-avatars.com/api/?name=stories`,
     },
   };
 

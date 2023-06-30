@@ -15,8 +15,24 @@ function PremiseRow({ id }) {
   const router = useRouter();
   const { data: session } = useSession();
 
+  // const [messages] = useCollection(
+  //   collection(db, 'users', session.user.email, 'premises', id, 'messages')
+  // );
+
   const [messages] = useCollection(
-    collection(db, 'users', session.user.email, 'premises', id, 'messages')
+    session &&
+      query(
+        collection(
+          db,
+          'users',
+          session.user.email,
+          'premises',
+          id,
+          // 'premised',
+          'premise'
+        ),
+        orderBy('createdAt', 'asc')
+      )
   );
 
   const removePremise = async () => {
@@ -26,11 +42,11 @@ function PremiseRow({ id }) {
   return (
     <Link
       href={`/characters/${id}`}
-      className="flex justify-center mt-[15px] cursor-pointer z-10 hover:bg-gray-700/50"
+      className="flex justify-center mt-[15px] max-w-[230px] text-ellipsis overflow-hidden cursor-pointer z-10 hover:bg-gray-700/50"
     >
       <ChatBubbleLeftIcon className="h-5 w-5" />
-      <p className="flex-1 hidden md:inline-flex truncate ml-2">
-        {(messages && messages?.docs[messages?.docs.length - 1]?.data().text) ||
+      <p className="flex-1 hidden md:inline-flex text-ellipsis overflow-hidden truncate ml-2">
+        {messages?.docs[0]?.data().text ||
           // messages?.docs?.data().text ||
           'Your Premise'}
       </p>

@@ -5,9 +5,10 @@ function GeoInfo({ userInput }) {
   const [world, setWorld] = useState('');
   const [premise, setPremise] = useState('');
 
-  if (userInput) {
-    setPremise(userInput);
-  }
+  // if (userInput) {
+  //   setPremise(userInput);
+  // }
+
   const callWorld = async () => {
     const response = await fetch('/api/auth/generateworld', {
       method: 'POST',
@@ -33,15 +34,13 @@ function GeoInfo({ userInput }) {
 
   return (
     <div>
-      {!premise ? (
-        <div></div>
-      ) : (
-        <div>
-          <Button title="GENERATE GEO" delay={0} onClick={callWorld} />
-          <div>{world}</div>
-          <div>Bomb</div>
-        </div>
-      )}
+      <div></div>
+
+      <div>
+        <Button title="GENERATE GEO" delay={0} />
+        {/* <div>{world}</div> */}
+        <div>Bomb</div>
+      </div>
     </div>
   );
 }

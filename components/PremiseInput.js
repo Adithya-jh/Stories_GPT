@@ -2,11 +2,21 @@ import React, { useState } from 'react';
 import TextArea from '@/components/TextArea';
 import Button from '@/components/Button';
 import { useSession } from 'next-auth/react';
+// import toast, { Toaster } from 'react-hot-toast';
 
 import { motion } from 'framer-motion';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  orderBy,
+  query,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { db } from '@/firebase';
+// import { useSession } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
+
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 import WorldAnimButton from './WorldAnimButton';
 import GeoInfo from './GeoInfo';
@@ -19,6 +29,22 @@ function PremiseInput({ premiseId, isMessage }) {
   const [isOutput, setisOutput] = useState(false);
 
   const { data: session } = useSession();
+
+  const [messages] = useCollection(
+    session &&
+      query(
+        collection(
+          db,
+          'users',
+          session.user.email,
+          'premises',
+          premiseId,
+          // 'premised',
+          'premise'
+        ),
+        orderBy('createdAt', 'asc')
+      )
+  );
 
   const callGenerateEndpoint = async (e) => {
     // setIsGenerating(true);
@@ -63,6 +89,29 @@ function PremiseInput({ premiseId, isMessage }) {
     // Toast Notification
     const notification = toast.loading('Generating your Character description');
 
+    // const response = await fetch('/api/auth/generate', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ userInput, premiseId, session }),
+    // }).then(() => {
+    //   // setisOutput(true);
+    //   toast.success('Your character description has been generated', {
+    //     id: notification,
+    //   });
+    // });
+    // if (response) {
+    //   const data = await response.json();
+    //   // rest of your code that handles the data
+
+    //   const { output } = data;
+    //   console.log('OpenAI replied...', output.text);
+
+    //   setApiOutput(`${output.text}`);
+    //   // setisOutput(true);
+    // }
+
     const response = await fetch('/api/auth/generate', {
       method: 'POST',
       headers: {
@@ -71,18 +120,19 @@ function PremiseInput({ premiseId, isMessage }) {
       body: JSON.stringify({ userInput, premiseId, session }),
     });
 
-    // .then(() => {
-    //   toast.success('Your character description has been generated', {
-    //     id: notification,
-    //   });
-    // });
+    if (response.ok) {
+      const data = await response.json();
 
-    const data = await response.json();
-    const { output } = data;
-    console.log('OpenAI replied...', output.text);
+      const { output } = data;
+      console.log('OpenAI replied...', output.text);
 
-    setApiOutput(`${output.text}`);
-    setisOutput(true);
+      setApiOutput(output.text);
+      // setisOutput(true);
+
+      toast.success('Your character description has been generated', {
+        id: notification,
+      });
+    }
 
     // api_out = apiOutput;
     // setIsGenerating(false);
@@ -93,9 +143,11 @@ function PremiseInput({ premiseId, isMessage }) {
   };
   return (
     <div className="p-0 m-0">
-      {!isMessage ? (
-        <div className="fixed">
-          {/* {apiOutput && (
+      {/* {!isMessage ? ( */}
+
+      {/* ) : ( */}
+      <div className={`fixed`}>
+        {/* {apiOutput && (
             <div className="text-white bg-white flex justify-center">
               <div className="absolute top-[50px] ml-[480px] w-[800px] flex justify-center items-center">
                 <p>{apiOutput}</p>
@@ -103,35 +155,35 @@ function PremiseInput({ premiseId, isMessage }) {
               </div>
             </div>
           )} */}
-          <motion.div
-            initial={{ y: 0 }}
-            // animate={{ y: isMoved ? 410 : 0 }}
-            transition={{ delay: 0, type: 'spring', stiffness: 100 }}
-            className="absolute ml-[250px] w-[100%] z-[2] h-[200px] top-[400px]"
-          >
-            <TextArea
-              value={userInput}
-              onChange={handleTextChange}
-              placeholder="Enter your premise here"
-            />
-          </motion.div>
-          <motion.div
-            initial={{ y: 0 }}
-            // animate={{ y: isMoved ? 410 : 0 }}
-            transition={{ delay: 0, type: 'spring', stiffness: 100 }}
-            // onClick={callGenerateEndpoint}
-            className="ml-[250px] flex justify-center p-[0px] m-[0px] z-[-1] relative w-[100%] mt-[400px]"
-          >
-            <Button
-              // path="/premise"
-              // path="/characters"
-              onClick={callGenerateEndpoint}
-              title="GET ME CHARACTERS"
-              delay={2}
-              // onClick
-            />
-          </motion.div>
-          {/* {apiOutput && (
+        <motion.div
+          initial={{ y: 0 }}
+          animate={{ y: isMoved || !messages?.empty ? 410 : 0 }}
+          transition={{ delay: 0, type: 'spring', stiffness: 100 }}
+          className="ml-[230px] w-[100%] z-[2] h-[200px] top-[200px]"
+        >
+          <TextArea
+            value={userInput}
+            onChange={handleTextChange}
+            placeholder="Enter your premise here"
+          />
+        </motion.div>
+        <motion.div
+          initial={{ y: 0 }}
+          animate={{ y: isMoved || !messages?.empty ? 410 : 0 }}
+          transition={{ delay: 0, type: 'spring', stiffness: 100 }}
+          // onClick={callGenerateEndpoint}
+          className="ml-[250px] flex justify-center p-[0px] m-[0px] z-[-1] relative w-[100%] mt-[-200px]"
+        >
+          <Button
+            // path="/premise"
+            // path="/characters"
+            onClick={callGenerateEndpoint}
+            title="GET ME CHARACTERS"
+            delay={2}
+            // onClick
+          />
+        </motion.div>
+        {/* {apiOutput && (
           <div className="text-white  flex justify-center">
             <div className="mt-[100px]">
               <p>{apiOutput}</p>
@@ -139,60 +191,16 @@ function PremiseInput({ premiseId, isMessage }) {
             </div>
           </div>
         )} */}
-        </div>
-      ) : (
-        <div className="fixed">
-          {/* {apiOutput && (
-            <div className="text-white bg-white flex justify-center">
-              <div className="absolute top-[50px] ml-[480px] w-[800px] flex justify-center items-center">
-                <p>{apiOutput}</p>
-       
-              </div>
-            </div>
-          )} */}
-          <motion.div
-            initial={{ y: 0 }}
-            animate={{ y: isMoved ? 410 : 0 }}
-            transition={{ delay: 0, type: 'spring', stiffness: 100 }}
-            className="ml-[230px] w-[100%] z-[2] h-[200px] top-[200px]"
-          >
-            <TextArea
-              value={userInput}
-              onChange={handleTextChange}
-              placeholder="Enter your premise here"
-            />
-          </motion.div>
-          <motion.div
-            initial={{ y: 0 }}
-            animate={{ y: isMoved ? 410 : 0 }}
-            transition={{ delay: 0, type: 'spring', stiffness: 100 }}
-            // onClick={callGenerateEndpoint}
-            className="ml-[250px] flex justify-center p-[0px] m-[0px] z-[-1] relative w-[100%] mt-[-200px]"
-          >
-            <Button
-              // path="/premise"
-              // path="/characters"
-              onClick={callGenerateEndpoint}
-              title="GET ME CHARACTERS"
-              delay={2}
-              // onClick
-            />
-          </motion.div>
-          {/* {apiOutput && (
-          <div className="text-white  flex justify-center">
-            <div className="mt-[100px]">
-              <p>{apiOutput}</p>
-    
-            </div>
-          </div>
-        )} */}
-        </div>
-      )}
+      </div>
+      {/* )} */}
 
       {/* <GeoInfo userInput={userInput} apiOutput={apiOutput} /> */}
       {userInput && apiOutput && (
         <div className="absolute top-5 ml-[300px]">
           <WorldAnimButton userInput={userInput} apiOutput={apiOutput} />
+          {/* {toast.success('Your character description has been generated', {
+            id: toast.loading('Generating your Character description'),
+          })} */}
         </div>
       )}
 

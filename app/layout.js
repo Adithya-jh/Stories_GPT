@@ -3,6 +3,7 @@ import { Orbitron } from 'next/font/google';
 import { Rajdhani } from 'next/font/google';
 
 import Login from '@/components/Login';
+import ClientProvider from '@/components/ClientProvider';
 
 const orbitron = Orbitron({ subsets: ['latin'] });
 const rajdhani = Rajdhani({ subsets: ['latin'], weight: ['400'] });
@@ -25,7 +26,12 @@ export default async function RootLayout({ children }) {
         {!session ? (
           <Login />
         ) : (
-          <SessionProvider session={session}>{children}</SessionProvider>
+          // <div>
+          <SessionProvider session={session}>
+            {children}
+            <ClientProvider />
+          </SessionProvider>
+          // </div>
         )}
       </body>
     </html>
