@@ -3,6 +3,7 @@ import TextArea from '@/components/TextArea';
 import Button from '@/components/Button';
 import { useSession } from 'next-auth/react';
 // import toast, { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 import { motion } from 'framer-motion';
 import {
@@ -15,6 +16,7 @@ import {
 import { db } from '@/firebase';
 // import { useSession } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
+// import { useNavigate } from 'react-router-dom';
 
 import { useCollection } from 'react-firebase-hooks/firestore';
 
@@ -29,6 +31,8 @@ function PremiseInput({ premiseId, isMessage }) {
   const [isOutput, setisOutput] = useState(false);
 
   const { data: session } = useSession();
+  const router = useRouter();
+  // const navigate = useNavigate();
 
   const [messages] = useCollection(
     session &&
@@ -127,7 +131,7 @@ function PremiseInput({ premiseId, isMessage }) {
       console.log('OpenAI replied...', output.text);
 
       setApiOutput(output.text);
-      // setisOutput(true);
+      setisOutput(true);
 
       toast.success('Your character description has been generated', {
         id: notification,
@@ -137,6 +141,10 @@ function PremiseInput({ premiseId, isMessage }) {
     // api_out = apiOutput;
     // setIsGenerating(false);
   };
+
+  // const nextPage = () => {
+  //   navigate.go(1); // Navigate forward by one page
+  // };
 
   const handleTextChange = (event) => {
     setUserInput(event.target.value);
@@ -194,10 +202,25 @@ function PremiseInput({ premiseId, isMessage }) {
       </div>
       {/* )} */}
 
+      {/* <Button title="ckick" onClick={nextPage} /> */}
+
       {/* <GeoInfo userInput={userInput} apiOutput={apiOutput} /> */}
       {userInput && apiOutput && (
         <div className="absolute top-5 ml-[300px]">
           <WorldAnimButton userInput={userInput} apiOutput={apiOutput} />
+          {/* {toast.success('Your character description has been generated', {
+            id: toast.loading('Generating your Character description'),
+          })} */}
+        </div>
+      )}
+
+      {messages && (
+        <div className="absolute top-5 ml-[300px]">
+          <WorldAnimButton
+            userInput={userInput}
+            apiOutput={apiOutput}
+            premiseId={premiseId}
+          />
           {/* {toast.success('Your character description has been generated', {
             id: toast.loading('Generating your Character description'),
           })} */}

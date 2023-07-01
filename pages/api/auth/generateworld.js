@@ -4,6 +4,9 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+import admin from 'firebase-admin';
+import { adminDb } from '@/firebaseAdmin';
+
 const openai = new OpenAIApi(configuration);
 
 // const basePromptPrefix = `Write me a detailed table of contents for a blog post with the title below.
@@ -32,6 +35,9 @@ Generate the detailed study of the geographies and the location for the story ba
 Keep it simple and relatable, the setting and location should be new and true to the given premise below - 
 `;
 
+const basePromptPrefix2 = `before that identify that is the given premise is like a premise or not if the premise is one or two
+words then ask them to retype the premise `;
+
 const generateAction = async (req, res) => {
   console.log(`API: ${basePromptPrefix}${req.body.userInput}`);
   // const baseCompletion = await openai.createCompletion({
@@ -42,13 +48,14 @@ const generateAction = async (req, res) => {
   // });
 
   // const prompt = `${basePromptPrefix}${req.body.userInput}`;
-  //   const user_prompt = req.body.userInput;
-  //   let prompty =
-  //     'Generate a alert message to user to enter the text(premise) below.';
+  const { userInput, worldId, session } = req.body;
+  const user_prompt = req.body.userInput;
+  let prompty =
+    'Generate a alert message to user to enter the text(premise) below.';
 
-  //   if (user_prompt) {
-  prompty = `${basePromptPrefix}${req.body.userInput}`;
-  //   }
+  if (user_prompt) {
+    prompty = `${basePromptPrefix}${req.body.userInput}`;
+  }
 
   const resp = await openai
     .createCompletion({
@@ -72,6 +79,38 @@ const generateAction = async (req, res) => {
       (err) =>
         `CHATGPT was unable to find an answer for that , ERROR : ${err.message}`
     );
+
+  const message1 = {
+    text: resp.choices[0].text,
+    // timestamp: admin.firestore.serverTimestamp().now(),
+    timestamp: admin.firestore.FieldValue.serverTimestamp(),
+
+    user: {
+      id: 'storiesgpt',
+      name: 'storiesgpt',
+    },
+  };
+
+  const message = {
+    text: resp.choices[0].text,
+    // text: input,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+
+    user: {
+      _id: 'storiesgpt',
+      name: 'stories-gpt',
+      avatar: `https://ui-avatars.com/api/?name=stories`,
+    },
+  };
+
+  await adminDb
+    .collection('users')
+    .doc(session.user.email)
+    .collection('worlds')
+    .doc(worldId)
+    // .collection('premised')
+    .collection('world')
+    .add(message);
 
   // const basePromptOutput = baseCompletion.data.choices;
   // const basePromptOutput = baseCompletion.data.choices.pop();

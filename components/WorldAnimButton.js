@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 
 import WorldButton from './WorldButton';
 
-function WorldAnimButton({ userInput, apiOutput }) {
+function WorldAnimButton({ userInput, apiOutput, premiseId }) {
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -18,6 +18,9 @@ function WorldAnimButton({ userInput, apiOutput }) {
         // premises: [],
         userId: session.user.email,
         createdAt: serverTimestamp(),
+        premiseId: premiseId,
+        premise: userInput,
+        characters: apiOutput,
       }
     );
 
