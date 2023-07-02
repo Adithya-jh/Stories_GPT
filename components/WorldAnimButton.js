@@ -21,6 +21,7 @@ function WorldAnimButton({ userInput, apiOutput, premiseId }) {
         premiseId: premiseId,
         premise: userInput,
         characters: apiOutput,
+        section: 'world',
       }
     );
 

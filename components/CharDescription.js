@@ -36,7 +36,7 @@ function CharDescription({ premiseId }) {
     }
   }, []);
 
-  console.log(messages);
+  // console.log(messages);
   return (
     <div>
       <motion.div

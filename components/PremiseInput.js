@@ -50,6 +50,16 @@ function PremiseInput({ premiseId, isMessage }) {
       )
   );
 
+  const [messages1] = useCollection(
+    session &&
+      query(
+        collection(db, 'users', session.user.email, 'worlds'),
+        orderBy('createdAt', 'asc')
+      )
+  );
+  // console.log(messages1);
+  // console.log(messages1);
+
   const callGenerateEndpoint = async (e) => {
     // setIsGenerating(true);
     e.preventDefault();
@@ -146,6 +156,10 @@ function PremiseInput({ premiseId, isMessage }) {
   //   navigate.go(1); // Navigate forward by one page
   // };
 
+  const gotoWorld = (path) => {
+    router.push(`/worlds/${path}`);
+  };
+
   const handleTextChange = (event) => {
     setUserInput(event.target.value);
   };
@@ -205,14 +219,12 @@ function PremiseInput({ premiseId, isMessage }) {
       {/* <Button title="ckick" onClick={nextPage} /> */}
 
       {/* <GeoInfo userInput={userInput} apiOutput={apiOutput} /> */}
-      {userInput && apiOutput && (
+      {/* {userInput && apiOutput && (
         <div className="absolute top-5 ml-[300px]">
           <WorldAnimButton userInput={userInput} apiOutput={apiOutput} />
-          {/* {toast.success('Your character description has been generated', {
-            id: toast.loading('Generating your Character description'),
-          })} */}
+          
         </div>
-      )}
+      )} */}
 
       {messages && (
         <div className="absolute top-5 ml-[300px]">
@@ -221,11 +233,39 @@ function PremiseInput({ premiseId, isMessage }) {
             apiOutput={apiOutput}
             premiseId={premiseId}
           />
-          {/* {toast.success('Your character description has been generated', {
-            id: toast.loading('Generating your Character description'),
-          })} */}
         </div>
       )}
+
+      {/* {messages1 &&
+        !messages1.empty &&
+        messages1.docs.forEach((message1) => {
+          if (message1.data().premiseId === premiseId) {
+            <button onClick={gotoWorld(message1.id)}>Next</button>;
+            // console.log(message1.id);
+            // console.log(message1.data().premiseId);
+            // console.log(premiseId);
+          }
+        })} */}
+
+      {messages1 &&
+        !messages1.empty &&
+        messages1.docs.map((message1) => {
+          if (message1.data().premiseId === premiseId) {
+            return (
+              // <button
+              //   className="z-[800] mr-[100px] cursor-pointer"
+              //   onClick={() => gotoWorld(message1.id)}
+              // >
+              //   Next
+              // </button>
+
+              <div className="absolute ml-[1000px]">
+                <Button title="Next" onClick={() => gotoWorld(message1.id)} />
+              </div>
+            );
+          }
+          return null; // Add this if you want to return null for other cases
+        })}
 
       {/* {userInput && apiOutput && (
         <div className="absolute top-5 ml-[300px]">

@@ -3,9 +3,12 @@ import React, { useState } from 'react';
 import GeoInfo from '@/components/GeoInfo';
 import WorldDescription from '@/components/WorldDescription';
 
+import Header from '@/components/Header';
+
 function World({ params: { id } }) {
   return (
     <div className="mt-[100px] text-white">
+      <Header />
       <div>
         {/* <GeoInfo /> */}
 

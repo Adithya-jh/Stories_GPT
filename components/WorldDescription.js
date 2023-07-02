@@ -1,6 +1,6 @@
 'use client';
 import { db } from '@/firebase';
-import { collection, orderBy, query } from 'firebase/firestore';
+import { collection, orderBy, query, onSnapshot } from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import React, { useState, useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -33,18 +33,97 @@ function WorldDescription({ worldId }) {
   //         orderBy('createdAt', 'asc')
   //       )
   //   );
-  const [premises] = useCollection(
-    session &&
-      query(
-        collection(db, 'users', session.user.email, 'worlds'),
-        orderBy('createdAt', 'asc')
-      )
-  );
+  // const [premises] = useCollection(
+  //   session &&
+  //     query(
+  //       collection(db, 'users', session.user.email, 'worlds'),
+  //       orderBy('createdAt', 'asc')
+  //     )
+  // );
+  // const [premises] = useCollection(
+  //   session &&
+  //     query(
+  //       collection(db, 'users', session.user.email, 'worlds'),
+  //       orderBy('createdAt', 'asc')
+  //     )
+  // );
+
+  // if (premises && !premises?.empty) {
+  //   const premise1 =
+  //     'a boy in a small village trying to do adventureos things by going to the mountain';
+  //   // const premise1 =
+  //   //   premises[0]._document.data.value.mapValue.fields.text.stringValue;
+  //   setUserInput(premise1);
+  // }
+
+  // const fetchPremises = async () => {
+  //   // Await the premises object
+  //   const [premises] = await useCollection(
+  //     session &&
+  //       query(
+  //         collection(db, 'users', session.user.email, 'worlds'),
+  //         orderBy('createdAt', 'asc')
+  //       )
+  //   );
+
+  //   if (!premises?.empty) {
+  //     const premise1 = premises[0].data().premise;
+  //     setUserInput(premise1);
+  //   }
+  // };
+
+  const fetchPremises = async () => {
+    const premisesPromise = new Promise((resolve) => {
+      const [premises] = useCollection(
+        session &&
+          query(
+            collection(db, 'users', session.user.email, 'worlds'),
+            orderBy('createdAt', 'asc')
+          )
+      );
+      resolve(premises);
+    });
+
+    const premises = await premisesPromise;
+    // console.log(premises);
+    console.log(premises.docs[0].data().premise);
+
+    if (premises && premises.docs && premises.docs.length > 0) {
+      const premise1 = premises.docs[0].data().premise;
+      // const premise1 =
+      //   "In a dystopian future, a skilled hacker must infiltrate a high-tech corporation's secret facility to expose their sinister plans that threaten humanity's freedom and existence.";
+      setUserInput(premise1);
+    }
+  };
+
+  // fetchPremises();
+
+  // ...
 
   useEffect(() => {
-    premises &&
-      premises.docs.forEach((premise) => setUserInput(premise.premise));
-  }, [premises]);
+    const fetchPremises = async () => {
+      const q = query(
+        collection(db, 'users', session.user.email, 'worlds'),
+        orderBy('createdAt', 'asc')
+      );
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        if (!snapshot.empty) {
+          const premise1 = snapshot.docs[0].data().premise;
+          setUserInput(premise1);
+        }
+      });
+
+      return () => {
+        // Unsubscribe from the snapshot listener when the component unmounts
+        unsubscribe();
+      };
+    };
+
+    fetchPremises();
+
+    // ...
+  }, []);
 
   const callWorld = async () => {
     const notification = toast.loading(
