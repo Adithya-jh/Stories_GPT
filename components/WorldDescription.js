@@ -179,7 +179,7 @@ function WorldDescription({ worldId }) {
 
   return (
     <div>
-      <div className=" h-[300px] w-[200px] ml-[400px]  flex justify-center items-start mt-[-70px]">
+      <div className=" h-[300px] w-[200px] ml-[340px]  flex justify-center items-start mt-[-70px]">
         <Button title="GENERATE GEO" delay={0} onClick={callWorld} />
       </div>
 
@@ -187,10 +187,15 @@ function WorldDescription({ worldId }) {
         initial={{ x: 2000 }}
         animate={{ x: !messages?.empty && 0 }}
         transition={{ delay: 1, type: 'spring', stiffness: 100 }}
-        className={`absolute text-white py-4  flex flex-col mt-[-20px] overflow-scroll  ml-[-120px] max-h-[450px] ${
+        className={`absolute  py-4  flex flex-col mt-[-50px] overflow-scroll  ml-[-120px] max-h-[450px] ${
           !messages?.empty && 'border border-y-3 rounded-lg'
         } w-[1100px]`}
       >
+        <div className="text-white  w-[100%]  flex justify-center items-center  ">
+          <h3 className="w-[50%] border bg-black rounded-[50px]">
+            GEOGRAPHIC DESCRIPTION BASED ON YOUR PREMISE
+          </h3>
+        </div>
         {messages &&
           messages.docs.map((message) => (
             <Characters
