@@ -4,6 +4,8 @@ import GeoInfo from '@/components/GeoInfo';
 import WorldDescription from '@/components/WorldDescription';
 import WorldAnimation from '@/components/WorldAnimation';
 
+import StoryButton from '@/components/StoryButton';
+
 import Header from '@/components/Header';
 
 function World({ params: { id } }) {
@@ -53,6 +55,7 @@ function World({ params: { id } }) {
             </div>
           </div>
         </div>
+        <StoryButton worldId={id} />
       </div>
     </div>
   );
